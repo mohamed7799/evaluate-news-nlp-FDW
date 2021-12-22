@@ -1,5 +1,6 @@
-
 // TODO include your scss file here
+
+import "./styles/style.scss";
 
 // TODO: get the button for submit
 // TODO: add event listener to it when the click to call handleSubmit function

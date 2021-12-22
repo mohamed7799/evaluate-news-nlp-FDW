@@ -1,22 +1,31 @@
-// TODO: Configure the environment variables
+const dotenv = require("dotenv");
 
-const mockAPIResponse = require('./mockAPI.js')
+const express = require("express");
 
-const PORT = 8081
+const cors = require("cors");
 
-// TODO add Configuration to be able to use env variables
+const path = require("path");
 
+const mockAPIResponse = require("./mockAPI.js");
 
-// TODO: Create an instance for the server
-// TODO: Configure cors to avoid cors-origin issue
-// TODO: Configure express to use body-parser as middle-ware.
-// TODO: Configure express static directory.
+const PORT = 8081;
 
-app.get('/', function (req, res) {
-    // res.sendFile('dist/index.html')
-    res.sendFile(path.resolve('src/client/views/index.html'))
-})
+dotenv.config({ path: "../../.env" });
+
+const app = express();
+app.use(cors());
+
+app.use(express.json());
+
+app.use(express.static("../client"));
+
+app.get("/", function (req, res) {
+  // res.sendFile('dist/index.html')
+  res.sendFile(path.resolve("../client/views/index.html"));
+});
+
 // a route that handling post request for new URL that coming from the frontend
+
 /* TODO:
     1. GET the url from the request body
     2. Build the URL it should be something like `${BASE_API_URL}?key=${MEAN_CLOUD_API_KEY}&url=${req.body.url}&lang=en`
@@ -34,14 +43,14 @@ app.get('/', function (req, res) {
      }
 */
 
-app.get('/test', function (req, res) {
-    res.send(mockAPIResponse)
-})
+app.get("/test", function (req, res) {
+  res.send(mockAPIResponse);
+});
 
 // designates what port the app will listen to for incoming requests
 app.listen(PORT, (error) => {
-    if (error) throw new Error(error)
-    console.log(`Server listening on port ${PORT}!`)
-})
+  if (error) throw new Error(error);
+  console.log(`Server listening on port ${PORT}!`);
+});
 
 // TODO: export app to use it in the unit testing

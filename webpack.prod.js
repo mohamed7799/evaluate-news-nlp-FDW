@@ -1,17 +1,31 @@
+const path = require("path");
+
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerWebpackPlugin = require("css-minimizer-webpack-plugin");
 const TerserWebpackPlugin = require("terser-webpack-plugin");
 module.exports = {
   entry: "./src/client/index.js",
+  output: {
+    filename: "main.js",
+    path: path.resolve(__dirname, "dist"),
+  },
   mode: "production",
   module: {
     rules: [
-      { test: /\.scss$/, use: ["style-loader", "css-loader", "scss-loader"] },
       {
-        test: /\.js$/,
+        test: /\.s[ac]ss$/i,
+        use: ["style-loader", "css-loader", "sass-loader"],
+      },
+      {
+        test: /\.m?js$/,
         exclude: /node_modules/,
-        loader: "bable-loader",
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: [["@babel/preset-env", { targets: "defaults" }]],
+          },
+        },
       },
     ],
   },
