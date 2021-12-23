@@ -1,16 +1,18 @@
-const dotenv = require("dotenv");
+import dotenv from "dotenv";
 
-const express = require("express");
+import express from "express";
 
-const cors = require("cors");
+import axiox from "axios";
 
-const path = require("path");
+import cors from "cors";
 
-const mockAPIResponse = require("./mockAPI.js");
+import { resolve } from "path";
+
+import mockAPIResponse from "./mockAPI.js";
+
+dotenv.config();
 
 const PORT = 8081;
-
-dotenv.config({ path: "../../.env" });
 
 const app = express();
 app.use(cors());
@@ -21,27 +23,31 @@ app.use(express.static("../client"));
 
 app.get("/", function (req, res) {
   // res.sendFile('dist/index.html')
-  res.sendFile(path.resolve("../client/views/index.html"));
+  res.sendFile(resolve("../client/views/index.html"));
 });
 
-// a route that handling post request for new URL that coming from the frontend
+app.post("/postData", async (req, res) => {
+  const resData = await axiox({
+    method: "post",
+    url: "https://api.meaningcloud.com/sentiment-2.1",
+    data: {
+      key: process.env.API_KEY,
+      url: req.body.url,
+      lang: "en",
+    },
+  });
 
-/* TODO:
-    1. GET the url from the request body
-    2. Build the URL it should be something like `${BASE_API_URL}?key=${MEAN_CLOUD_API_KEY}&url=${req.body.url}&lang=en`
-    3. Fetch Data from API
-    4. Send it to the client
-    5. REMOVE THIS TODO AFTER DOING IT 😎😎
-    server sends only specified data to the client with below codes
-     const sample = {
-       text: '',
-       score_tag : '',
-       agreement : '',
-       subjectivity : '',
-       confidence : '',
-       irony : ''
-     }
-*/
+  const { score_tag, agreement, subjectivity, confidence, irony } =
+    resData.data;
+
+  res.json({
+    score_tag,
+    agreement,
+    subjectivity,
+    confidence,
+    irony,
+  });
+});
 
 app.get("/test", function (req, res) {
   res.send(mockAPIResponse);
