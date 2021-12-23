@@ -1,15 +1,28 @@
-// TODO include your scss file here
-
 import "./styles/style.scss";
 
-// TODO: get the button for submit
-// TODO: add event listener to it when the click to call handleSubmit function
-/**
- * TODO
- *  - Get Value of the input for URL
- *  - Check if it's URL or not
- *      yes
- *          send it to the backend
- *      no
- *          show user message it's not valid URL
- */
+const axios = require("axios");
+
+const checkURL = require("./js/checkURL");
+
+const inputField = document.querySelector("#article-url");
+
+document.querySelector("#form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  if (!checkURL(inputField.value)) {
+    alert("enter a valid URL");
+  } else {
+    axios({
+      method: "post",
+      url: "http://localhost:8081/postData",
+      data: {
+        url: inputField.value,
+      },
+    }).then((response) => {
+      for (const property in response.data) {
+        document.querySelector(
+          `#${property}`
+        ).textContent = `${property} :${response.data[property]}`;
+      }
+    });
+  }
+});

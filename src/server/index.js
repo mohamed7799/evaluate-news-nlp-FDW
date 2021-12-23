@@ -1,21 +1,21 @@
-import dotenv from "dotenv";
+const dotenv = require("dotenv");
 
-import express from "express";
+const express = require("express");
 
-import axiox from "axios";
+const axiox = require("axios");
 
-import cors from "cors";
+const cors = require("cors");
 
-import { resolve } from "path";
+const path = require("path");
 
-import mockAPIResponse from "./mockAPI.js";
+const mockAPIResponse = require("./mockAPI.js");
 
 dotenv.config();
 
 const PORT = 8081;
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: "*" }));
 
 app.use(express.json());
 
@@ -23,7 +23,7 @@ app.use(express.static("../client"));
 
 app.get("/", function (req, res) {
   // res.sendFile('dist/index.html')
-  res.sendFile(resolve("../client/views/index.html"));
+  res.sendFile(path.resolve("src/client/views/index.html"));
 });
 
 app.post("/postData", async (req, res) => {
@@ -33,7 +33,7 @@ app.post("/postData", async (req, res) => {
     data: {
       key: process.env.API_KEY,
       url: req.body.url,
-      lang: "en",
+      lang: "auto",
     },
   });
 
