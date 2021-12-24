@@ -4,6 +4,8 @@ const axios = require("axios");
 
 const checkURL = require("./js/checkURL");
 
+const renderContent = require("./js/renderContent");
+
 const inputField = document.querySelector("#article-url");
 
 document.querySelector("#form").addEventListener("submit", (e) => {
@@ -17,12 +19,8 @@ document.querySelector("#form").addEventListener("submit", (e) => {
       data: {
         url: inputField.value,
       },
-    }).then((response) => {
-      for (const property in response.data) {
-        document.querySelector(
-          `#${property}`
-        ).textContent = `${property} :${response.data[property]}`;
-      }
-    });
+    })
+      .then((response) => renderContent(response.data))
+      .catch((err) => console.log(err));
   }
 });

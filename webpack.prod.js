@@ -1,4 +1,5 @@
 const path = require("path");
+const { GenerateSW } = require("workbox-webpack-plugin");
 
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -35,7 +36,7 @@ module.exports = {
       filename: "./index.html",
     }),
     new MiniCssExtractPlugin({ filename: "[name].[contenthash].css" }),
-    // TODO: configure workbox-webpack-plugin
+    new GenerateSW(),
   ],
   optimization: {
     minimizer: [new CssMinimizerWebpackPlugin(), new TerserWebpackPlugin()],

@@ -19,11 +19,10 @@ app.use(cors({ origin: "*" }));
 
 app.use(express.json());
 
-app.use(express.static("../client"));
+app.use(express.static("dist"));
 
 app.get("/", function (req, res) {
-  // res.sendFile('dist/index.html')
-  res.sendFile(path.resolve("src/client/views/index.html"));
+  res.sendFile("dist/index.html");
 });
 
 app.post("/postData", async (req, res) => {

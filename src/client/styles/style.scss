@@ -1,3 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@700;900&display=swap");
+@import "form";
+@import "header";
+@import "FormResults";
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
 body {
-  //background-color: green;
+  min-height: 100vh;
+  font-family: "Roboto", sans-serif;
+  text-transform: capitalize;
+}
+
+.container {
+  width: 90%;
+  margin: 4rem auto;
+  max-width: 500px;
 }
